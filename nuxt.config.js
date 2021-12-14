@@ -38,9 +38,8 @@ export default {
     linkExactActiveClass: 'active'
   },
 
-  server: {     
-    port: process.env.VUE_APP_PORT, // default: 3000     
-    host: process.env.VUE_APP_HOST, // default: localhost   
+  server: {        
+    host: process.env.BASE_URL, // default: localhost   
   }, 
   /*
   ** Customize the progress-bar color
@@ -106,7 +105,7 @@ export default {
   axios: {
     // proxy: true,
     credentials: true,
-    baseURL: process.env.VUE_APP_BASE_URL + '/api',
+    baseURL: process.env.API_URL,
   },
 
   // proxy: {
@@ -120,7 +119,7 @@ export default {
     strategies: {
       'laravelSanctum': {
         provider: 'laravel/sanctum',
-        url: process.env.VUE_APP_BASE_URL,
+        url: process.env.API_URL,
         endpoints:{
           login:{
             url: '/api/login'
@@ -160,7 +159,7 @@ export default {
     extend (config, ctx) {
     },
     babel: {
-      // compact: true,
+      compact: true,
       plugins: [
         [
           'component',

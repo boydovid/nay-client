@@ -73,11 +73,7 @@ export default {
                 data: this.form
             })
             .then((response) => {
-                if ( this.$auth.$state.redirect == '/' || this.$auth.$state.redirect == '/login' || this.$auth.$state.redirect == undefined ) {
-                    this.$router.push({ path: '/' })
-                }else {
-                    this.$router.push({ path: this.$auth.$state.redirect })
-                }
+                this.$router.push({ path: '/' });
             })
             .catch(error => {
                 this.$notify({
