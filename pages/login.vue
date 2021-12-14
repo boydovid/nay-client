@@ -13,9 +13,9 @@
                                 >
                                     <b-form-input
                                     id="input-1"
-                                    v-model="form.email"
-                                    type="email"
-                                    placeholder="Enter email"
+                                    v-model="form.name"
+                                    type="text"
+                                    placeholder="Enter Username"
                                     required
                                     ></b-form-input>
                                 </b-form-group>
@@ -55,7 +55,7 @@ export default {
     data() {
         return {
             form: {
-                email: '',
+                name: '',
                 password: ''
             },
 
@@ -82,7 +82,7 @@ export default {
             .catch(error => {
                 this.$notify({
                     message:
-                    'Invalid Email or Password !',
+                    'Invalid Username or Password !',
                     timeout: 3000,
                     icon: 'tim-icons icon-bell-55',
                     horizontalAlign: 'center',

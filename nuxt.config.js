@@ -39,7 +39,7 @@ export default {
   },
 
   server: {     
-    port: process.env.VUE_APP_PORT, // default: 3000     
+    port: 3000, // default: 3000     
     host: process.env.VUE_APP_HOST, // default: localhost   
   }, 
   /*

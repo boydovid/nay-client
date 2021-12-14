@@ -9,9 +9,9 @@
                 <b-col sm="12" md="3" lg="3" xl="3">
                   <b-form-group label="អតិថិជន">
                     <b-form-select
-                      id="input-customerType"
                       v-model="customerType"
                       :options="customerTypeOptions"
+                      @change="calculateTotal"
                     ></b-form-select>
                   </b-form-group>
                 </b-col>
@@ -95,26 +95,28 @@
                             <b-col>{{ data.item.code }}</b-col>
                           </b-row>
                           <b-row class="my-1">
-                            <b-col>{{
-                              toCurrencyString(data.item.price / 100)
-                            }}</b-col>
+                            <b-col>
+                              <div v-if="customerType === 0">
+                                {{ toCurrencyString(data.item.price / 100) }}
+                              </div>
+                              <div v-else>
+                                {{
+                                  toCurrencyString(
+                                    data.item.price_special / 100
+                                  )
+                                }}
+                              </div>
+                            </b-col>
                           </b-row>
                           <b-row class="my-1">
                             <b-col>
                               <b-button
                                 size="sm"
                                 variant="primary"
-                                @click="
-                                  action_click(data.item, 'add');
-                                  countAdd(data.item);
-                                "
+                                @click="action_click(data.item, 'add')"
                               >
                                 <b-icon icon="cart-plus"></b-icon>
                               </b-button>
-                              <b-badge
-                                variant="warning"
-                                v-text="countAdd(data.item)"
-                              ></b-badge>
                             </b-col>
                           </b-row>
                         </b-col>
@@ -229,7 +231,12 @@
               <b-row class="my-1">
                 <b-col>តម្លៃ:</b-col>
                 <b-col class="text-right">
-                  {{ toCurrencyString(data.item.price / 100) }}
+                  <div v-if="customerType === 0">
+                    {{ toCurrencyString(data.item.price / 100) }}
+                  </div>
+                  <div v-else>
+                    {{ toCurrencyString(data.item.price_special / 100) }}
+                  </div>
                 </b-col>
               </b-row>
               <b-row class="my-1" align-v="center">
@@ -247,13 +254,19 @@
               <b-row class="my-1">
                 <b-col><b>សរុប:</b></b-col>
                 <b-col class="text-right"
-                  ><b>{{
+                  ><b v-if="customerType === 0">{{
                     toCurrencyString(
                       (data.item.price / 100) * data.item.qty -
                         data.item.dis * data.item.qty
                     )
-                  }}</b></b-col
-                >
+                  }}</b>
+                  <b v-else>{{
+                    toCurrencyString(
+                      (data.item.price_special / 100) * data.item.qty -
+                        data.item.dis * data.item.qty
+                    )
+                  }}</b>
+                </b-col>
               </b-row>
             </template>
           </b-table>
@@ -282,6 +295,68 @@
         </b-card>
       </b-col>
     </b-row>
+
+    <!-- Product Detail -->
+    <b-modal id="modal-product" scrollable>
+      <template #modal-title>
+        <h3>ពណ៌នាទំនិញ</h3>
+      </template>
+      <template #modal-footer>
+        <b-button @click="$bvModal.hide('modal-product')"> ចាកចេញ </b-button>
+      </template>
+      <template #default>
+        <b-row class="my-2">
+          <b-col>កូដ:</b-col>
+          <b-col class="text-right">{{ productDetail.code }}</b-col>
+        </b-row>
+        <b-row class="my-2">
+          <b-col>ឈ្មោះ:</b-col>
+          <b-col class="text-right">{{ productDetail.name }}</b-col>
+        </b-row>
+        <b-row class="my-2">
+          <b-col>តម្លៃធម្មតា:</b-col>
+          <b-col class="text-right">{{
+            toCurrencyString(productDetail.price / 100)
+          }}</b-col>
+        </b-row>
+        <b-row class="my-2">
+          <b-col>តម្លៃសម្រាប់អ្នកផ្សារ:</b-col>
+          <b-col class="text-right">{{
+            toCurrencyString(productDetail.price_special / 100)
+          }}</b-col>
+        </b-row>
+        <b-row class="my-2">
+          <b-col>តម្លៃដើម:</b-col>
+          <b-col class="text-right">{{
+            toCurrencyString(productDetail.cost / 100)
+          }}</b-col>
+        </b-row>
+        <b-row class="my-2">
+          <b-col>ចំនួន:</b-col>
+          <b-col class="text-right">{{ productDetail.quantity }}</b-col>
+        </b-row>
+        <b-row class="my-2">
+          <b-col>ប្រភេទ:</b-col>
+          <b-col class="text-right">{{ productDetail.category_kh }}</b-col>
+        </b-row>
+        <b-row class="my-2">
+          <b-col>ប្រេន:</b-col>
+          <b-col class="text-right">{{ productDetail.brand_kh }}</b-col>
+        </b-row>
+        <b-row class="my-2">
+          <b-col>ប្រទេស:</b-col>
+          <b-col class="text-right">{{ productDetail.country_kh }}</b-col>
+        </b-row>
+        <b-row class="my-2">
+          <b-col>ពណ៌:</b-col>
+          <b-col class="text-right">{{ productDetail.color_kh }}</b-col>
+        </b-row>
+        <b-row class="my-2">
+          <b-col>ពណ៌នា:</b-col>
+          <b-col class="text-right">{{ productDetail.description }}</b-col>
+        </b-row>
+      </template>
+    </b-modal>
 
     <!-- Modal Payment -->
     <b-modal id="modal-payment" no-close-on-backdrop>
@@ -337,56 +412,6 @@
             </b-col>
           </b-row>
         </div>
-      </template>
-    </b-modal>
-
-    <!-- Product Detail -->
-    <b-modal id="modal-product" scrollable>
-      <template #modal-title>
-        <h3>ពណ៌នាទំនិញ</h3>
-      </template>
-      <template #modal-footer>
-        <b-button @click="$bvModal.hide('modal-product')"> ចាកចេញ </b-button>
-      </template>
-      <template #default>
-        <b-row class="my-2">
-          <b-col>កូដ:</b-col>
-          <b-col class="text-right">{{ productDetail.code }}</b-col>
-        </b-row>
-        <b-row class="my-2">
-          <b-col>ឈ្មោះ:</b-col>
-          <b-col class="text-right">{{ productDetail.name }}</b-col>
-        </b-row>
-        <b-row class="my-2">
-          <b-col>តម្លៃ:</b-col>
-          <b-col class="text-right">{{
-            toCurrencyString(productDetail.price / 100)
-          }}</b-col>
-        </b-row>
-        <b-row class="my-2">
-          <b-col>ចំនួន:</b-col>
-          <b-col class="text-right">{{ productDetail.quantity }}</b-col>
-        </b-row>
-        <b-row class="my-2">
-          <b-col>ប្រភេទ:</b-col>
-          <b-col class="text-right">{{ productDetail.category_kh }}</b-col>
-        </b-row>
-        <b-row class="my-2">
-          <b-col>ប្រេន:</b-col>
-          <b-col class="text-right">{{ productDetail.brand_kh }}</b-col>
-        </b-row>
-        <b-row class="my-2">
-          <b-col>ប្រទេស:</b-col>
-          <b-col class="text-right">{{ productDetail.country_kh }}</b-col>
-        </b-row>
-        <b-row class="my-2">
-          <b-col>ពណ៌:</b-col>
-          <b-col class="text-right">{{ productDetail.color_kh }}</b-col>
-        </b-row>
-        <b-row class="my-2">
-          <b-col>ពណ៌នា:</b-col>
-          <b-col class="text-right">{{ productDetail.description }}</b-col>
-        </b-row>
       </template>
     </b-modal>
   </div>
@@ -503,11 +528,16 @@ export default {
     },
 
     calculateTotal() {
+      let these = this;
       let total = 0;
       let dis = 0;
 
       this.cartItems.forEach(function (data) {
-        total += (data.price * data.qty) / 100 - data.dis * data.qty;
+        if (these.customerType === 0) {
+          total += (data.price * data.qty) / 100 - data.dis * data.qty;
+        } else {
+          total += (data.price_special * data.qty) / 100 - data.dis * data.qty;
+        }
         dis += data.dis * data.qty;
       });
       this.totalAmount = total;
@@ -553,25 +583,12 @@ export default {
       this.calculateTotal();
     },
 
-    countAdd(item) {
-      const index = this.cartItems.reduce(
-        (i, cart, index) => (cart.id === item.id ? index : i),
-        -1
-      );
-      if (~index) {
-        return item.qty;
-      } else {
-        return 0;
-      }
-    },
-
     clearCart() {
       this.$store.dispatch("menu/resetCartItems");
       this.calculateTotal();
     },
 
     showProductDetail(item) {
-      console.log(item);
       this.productDetail = item;
       this.$bvModal.show("modal-product");
     },

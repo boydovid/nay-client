@@ -37,8 +37,8 @@ module.exports = {
     "widgets": "Widgets",
     "charts": "Charts",
     "calendar": "Calendar",
-    "products": "Product",
-    "menu": "Menu",
-    "history": "History"
+    "products": "ផលិតផល​",
+    "menu": "ការលក់",
+    "history": "របាយការណ៍"
   }
 }

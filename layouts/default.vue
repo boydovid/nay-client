@@ -40,7 +40,7 @@
           }"
         >
         </sidebar-item>
-        <sidebar-item
+        <!-- <sidebar-item
           :link="{
             name: $t('sidebar.icons'),
             icon: 'tim-icons icon-atom',
@@ -54,7 +54,7 @@
             icon: 'tim-icons icon-single-02',
             path: '/user' }"
         >
-        </sidebar-item>
+        </sidebar-item> -->
         <!-- <li class="active-pro">
           <a>
             <i class="tim-icons icon-spaceship"></i>
