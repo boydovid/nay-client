@@ -103,17 +103,17 @@ export default {
   },
 
   axios: {
-    proxy: true,
+    // proxy: true,
     credentials: true,
     baseURL: process.env.API_URL,
   },
 
-  proxy: {
-    '/laravel': {
-      target: 'https://laravel-auth.nuxtjs.app',
-      pathRewrite: { '^/laravel': '/' }
-    }
-  },
+  // proxy: {
+  //   '/laravel': {
+  //     target: 'https://laravel-auth.nuxtjs.app',
+  //     pathRewrite: { '^/laravel': '/' }
+  //   }
+  // },
 
   auth: {
     strategies: {
