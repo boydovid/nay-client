@@ -38,10 +38,10 @@ export default {
     linkExactActiveClass: 'active'
   },
 
-  // server: {     
-  //   port: 3000, // default: 3000     
-  //   host: process.env.VUE_APP_HOST, // default: localhost   
-  // }, 
+  server: {     
+    port: process.env.VUE_APP_PORT, // default: 3000     
+    host: process.env.VUE_APP_HOST, // default: localhost   
+  }, 
   /*
   ** Customize the progress-bar color
   */
@@ -160,6 +160,7 @@ export default {
     extend (config, ctx) {
     },
     babel: {
+      // compact: true,
       plugins: [
         [
           'component',
