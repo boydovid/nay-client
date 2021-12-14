@@ -8,7 +8,7 @@
                             <b-form @submit="onSubmit">
                                 <b-form-group
                                     id="input-group-1"
-                                    label="Email:"
+                                    label="Username:"
                                     label-for="input-1"
                                 >
                                     <b-form-input
